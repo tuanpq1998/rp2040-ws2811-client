@@ -273,7 +273,11 @@ public:
       // === modification: G = G + 8 (clamped) ===
       uint16_t g_tmp = origin.colors.g + 8;   // work in 16-bit to avoid wrap
       if (g_tmp > 255) g_tmp = 255;        // clamp to max 255
-      leds[i] = static_cast<uint8_t>(g_tmp);
+
+      led.colors.g = static_cast<uint8_t>(g_tmp);
+
+      // store full RGBLED back into the array
+      leds[i] = led;
     }
     channel_config_set_chain_to(&dma_gather_conf, dma_ctrl_chan);
     dma_channel_start(dma_ctrl_chan);
