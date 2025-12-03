@@ -147,11 +147,11 @@ private:
         const uint8_t r = (uint8_t)((val >> 16) & 0xFF);
         const uint8_t g = (uint8_t)((val >> 8) & 0xFF);
         const uint8_t b = (uint8_t)((val >> 0) & 0xFF);
-        uint8_t g_new = (g + 8 >= 255) ? 255 : (g + 8);
+        // uint8_t g_new = (g + 8 >= 255) ? 255 : (g + 8);
         return {
           .colors = {
-            .r = r,
-            .g = g_new,
+            .r = g,
+            .g = r,
             .b = b
           }
         };
