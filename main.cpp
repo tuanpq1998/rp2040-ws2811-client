@@ -4,6 +4,10 @@
 #include "pico/multicore.h"
 
 #include "ws2811.hpp"
+#include "ws2812.hpp"
+
+constexpr uint WS2812_NUM_LEDS = 30;
+constexpr uint WS2812_DATA_PIN = 21;
 
 void core1_entry() {
     gpio_init(PICO_DEFAULT_LED_PIN);
@@ -30,11 +34,20 @@ int main()
 
     auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
 
+    WS2812Client<WS2812_NUM_LEDS, WS2812_GRB> strip(pio0, WS2812_DATA_PIN, false);
+
     while (true) {
         const auto leds = ws2811.getLEDsAtomic();
         for (auto it = leds.begin(); it != leds.end(); it++) {
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
             print_led_state(*it);
+
+            for (uint i = 0; i < strip.getNumLeds(); ++i) {
+                // strip.clear();
+                strip.setPixel(i, leds[i].r, leds[i].g, leds[i].b);
+                strip.show();
+                sleep_ms(50);
+            }
         }
         sleep_ms(500);
         tight_loop_contents();
