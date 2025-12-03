@@ -30,24 +30,24 @@ int main()
     stdio_init_all();
     puts("Hello, world!");
 
-    multicore_launch_core1(core1_entry);
+    // multicore_launch_core1(core1_entry);
 
-    auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
+    // auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
 
     WS2812Client<WS2812_NUM_LEDS, WS2812_GRB> strip(pio0, WS2812_DATA_PIN, false);
 
     while (true) {
-        const auto leds = ws2811.getLEDsAtomic();
-        for (auto it = leds.begin(); it != leds.end(); it++) {
-            printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
-            print_led_state(*it);
+        // const auto leds = ws2811.getLEDsAtomic();
+        // for (auto it = leds.begin(); it != leds.end(); it++) {
+        //     printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
+        //     print_led_state(*it);
 
             // for (uint i = 0; i < strip.getNumLeds(); ++i) {
             //     // strip.clear();
             //     uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
             //     strip.setPixel(i, leds[i].colors.r, leds[i].colors.g, leds[i].colors.b);
             // }
-        }
+        // }
 
         for (uint i = 0; i < strip.getNumLeds(); ++i) {
             strip.clear();
@@ -55,7 +55,7 @@ int main()
             strip.show();
             sleep_ms(100);
         }
-        
+
         // strip.show();
         // sleep_ms(500);
         // tight_loop_contents();
