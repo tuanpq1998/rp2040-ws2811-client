@@ -9,21 +9,21 @@
 constexpr uint WS2812_NUM_LEDS = 10;
 constexpr uint WS2812_DATA_PIN = 21;
 
-void core1_entry() {
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+// void core1_entry() {
+//     gpio_init(PICO_DEFAULT_LED_PIN);
+//     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-    while (true) {
-        gpio_put(PICO_DEFAULT_LED_PIN, true);
-        sleep_ms(200);
-        gpio_put(PICO_DEFAULT_LED_PIN, false);
-        sleep_ms(200);
-    }
-}
+//     while (true) {
+//         gpio_put(PICO_DEFAULT_LED_PIN, true);
+//         sleep_ms(200);
+//         gpio_put(PICO_DEFAULT_LED_PIN, false);
+//         sleep_ms(200);
+//     }
+// }
 
-static void print_led_state(const RGBLED led) {
-    printf("%3u\t%3u\t%3u\n", led.colors.r, led.colors.g, led.colors.b);
-}
+// static void print_led_state(const RGBLED led) {
+//     printf("%3u\t%3u\t%3u\n", led.colors.r, led.colors.g, led.colors.b);
+// }
 
 int main() {
     stdio_init_all();

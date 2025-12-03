@@ -97,15 +97,21 @@ private:
     std::array<uint32_t, NUM_LEDS> ledState{};
 
     void initPio() {
-        // load PIO program if not already loaded; choose sm and init GPIO
-        offset = pio_add_program(pio, &ws2812_program);
-        sm     = pio_claim_unused_sm(pio, true);
+        static int loaded_offset = -1;
 
-        ws2812_program_init(pio, sm, offset, pin, 800000, rgbw); // 800 kHz, same as example
+        if (loaded_offset < 0) {
+            loaded_offset = pio_add_program(pio, &ws2812_program);
+        }
+
+        offset = loaded_offset;
+        sm = pio_claim_unused_sm(pio, true);
+
+        ws2812_program_init(pio, sm, offset, pin, 800000, rgbw);
     }
 
     inline void putPixel(uint32_t value) {
-        // shift into PIO TX FIFO; matches ws2812 PIO program expectations
-        pio_sm_put_blocking(pio, sm, value << 8u);
-    }
+    if (!rgbw)
+        value <<= 8;  // WS2812 (24-bit)
+    pio_sm_put_blocking(pio, sm, value);
+}
 };
