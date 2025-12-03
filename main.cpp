@@ -42,14 +42,22 @@ int main()
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
             print_led_state(*it);
 
-            for (uint i = 0; i < strip.getNumLeds(); ++i) {
-                // strip.clear();
-                uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
-                strip.setPixel(i, leds[i].colors.r, leds[i].colors.g, leds[i].colors.b);
-            }
+            // for (uint i = 0; i < strip.getNumLeds(); ++i) {
+            //     // strip.clear();
+            //     uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
+            //     strip.setPixel(i, leds[i].colors.r, leds[i].colors.g, leds[i].colors.b);
+            // }
         }
-        strip.show();
-        sleep_ms(500);
-        tight_loop_contents();
+
+        for (uint i = 0; i < strip.getNumLeds(); ++i) {
+            strip.clear();
+            strip.setPixel(i, 255, 0, 0);  // red
+            strip.show();
+            sleep_ms(100);
+        }
+        
+        // strip.show();
+        // sleep_ms(500);
+        // tight_loop_contents();
     }
 }
