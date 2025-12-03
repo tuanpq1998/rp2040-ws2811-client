@@ -44,7 +44,7 @@ int main()
 
             for (uint i = 0; i < strip.getNumLeds(); ++i) {
                 // strip.clear();
-                uint index = i > NUM_LEDS_TO_EMULATE ? NUM_LEDS_TO_EMULATE : i;
+                uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
                 strip.setPixel(i, leds[i].colors.r, leds[i].colors.g, leds[i].colors.b);
             }
         }
