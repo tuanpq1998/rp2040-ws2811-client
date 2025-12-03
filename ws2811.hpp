@@ -143,7 +143,7 @@ private:
 
   inline const RGBLED ledStateToLED(const uint32_t val) const {
     switch (MAPPING) {
-      case RGB:
+      case RGB: {
         const uint8_t r = (uint8_t)((val >> 16) & 0xFF);
         const uint8_t g = (uint8_t)((val >> 8) & 0xFF);
         const uint8_t b = (uint8_t)((val >> 0) & 0xFF);
@@ -155,6 +155,7 @@ private:
             .b = b
           }
         };
+      }
       case GRB:
         return {
           .colors = {
