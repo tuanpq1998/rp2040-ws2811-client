@@ -7,12 +7,10 @@ constexpr uint WS2812_DATA_PIN = 21;
 
 int main() {
     stdio_init_all();
-    sleep_ms(3000);  // Give USB enough time to enumerate
+    sleep_ms(2000);
 
-    printf("USB OK. Initializing strip...\n");
-
-    WS2812Client<WS2812_NUM_LEDS, WS2812_GRB> strip(pio0, WS2812_DATA_PIN, false);
-
-    printf("Strip initialized\n");
-
+    while (true) {
+        printf("USB TEST\n");
+        sleep_ms(1000);
+    }
 }
