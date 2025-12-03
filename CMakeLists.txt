@@ -28,8 +28,8 @@ pico_generate_pio_header(my-project ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
 pico_set_program_name(my-project "my-project")
 pico_set_program_version(my-project "0.1")
 
-pico_enable_stdio_uart(my-project 1)
 pico_enable_stdio_usb(my-project 1)
+pico_enable_stdio_uart(my-project 0)
 
 # Add the standard library to the build
 target_link_libraries(my-project pico_stdlib pico_multicore pico_mem_ops hardware_pio hardware_dma)
