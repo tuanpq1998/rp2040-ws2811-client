@@ -44,7 +44,7 @@ int main()
 
             for (uint i = 0; i < strip.getNumLeds(); ++i) {
                 // strip.clear();
-                strip.setPixel(i, leds[i].r, leds[i].g, leds[i].b);
+                strip.setPixel(i, leds[i].colors.r, leds[i].colors.g, leds[i].colors.b);
                 strip.show();
                 sleep_ms(50);
             }
