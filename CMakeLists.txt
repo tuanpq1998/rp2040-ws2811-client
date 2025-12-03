@@ -22,7 +22,7 @@ pico_sdk_init()
 add_executable(my-project main.cpp ws2811.cpp)
 
 pico_generate_pio_header(my-project ${CMAKE_CURRENT_LIST_DIR}/ws2811.pio)
-pico_generate_pio_header(pio_ws2812 ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
+pico_generate_pio_header(my-project ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
 
 
 pico_set_program_name(my-project "my-project")
