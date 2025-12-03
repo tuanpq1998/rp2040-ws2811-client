@@ -19,7 +19,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(my-project main.cpp ws2811.cpp)
+add_executable(my-project main.cpp ws2811.cpp ws2812.cpp)
 
 pico_generate_pio_header(my-project ${CMAKE_CURRENT_LIST_DIR}/ws2811.pio)
 pico_generate_pio_header(my-project ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
