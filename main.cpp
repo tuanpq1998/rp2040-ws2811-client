@@ -44,11 +44,11 @@ int main()
 
             for (uint i = 0; i < strip.getNumLeds(); ++i) {
                 // strip.clear();
+                uint index = i > NUM_LEDS_TO_EMULATE ? NUM_LEDS_TO_EMULATE : i;
                 strip.setPixel(i, leds[i].colors.r, leds[i].colors.g, leds[i].colors.b);
-                strip.show();
-                sleep_ms(50);
             }
         }
+        strip.show();
         sleep_ms(500);
         tight_loop_contents();
     }
