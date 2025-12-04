@@ -28,9 +28,6 @@ pico_generate_pio_header(my-project ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
 pico_set_program_name(my-project "my-project")
 pico_set_program_version(my-project "0.1")
 
-# Needed when building on a different host than the Pico is plugged into
-add_definitions(-DPICO_STDIO_USB_RESET_INTERFACE_SUPPORT=1)
-
 pico_enable_stdio_usb(my-project 1)
 pico_enable_stdio_uart(my-project 0)
 
