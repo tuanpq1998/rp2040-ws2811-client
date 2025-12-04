@@ -3,30 +3,31 @@
 #include "hardware/pio.h"
 #include "ws2812.pio.h"
 
-#define LED_PIN 21
-#define LED_COUNT 30
+#define LED_PIN 21      // the WS2812 data pin
+#define IS_RGBW false  // you are using RGB, not RGBW
+
+// Helper: GRB format
+static inline uint32_t grb(uint8_t r, uint8_t g, uint8_t b) {
+    return ((uint32_t)g << 16) | ((uint32_t)r << 8) | b;
+}
 
 int main() {
     stdio_init_all();
-    sleep_ms(2000);
-
-    printf("Init PIO...\n");
 
     PIO pio = pio0;
-    uint sm = 0;
-
+    int sm = 0;
     uint offset = pio_add_program(pio, &ws2812_program);
 
-    ws2812_program_init(pio, sm, offset, LED_PIN, 800000);
-
-    printf("PIO ready\n");
+    ws2812_program_init(pio, sm, offset, LED_PIN, IS_RGBW);
 
     while (1) {
-        uint32_t color = 0x00FF0000; // red GRB
-        pio_sm_put_blocking(pio, sm, color << 8);
+        // Yellow = R 255, G 255, B 0 → GRB = FF FF 00
+        uint32_t yellow = grb(255, 255, 0);
+
+        pio_sm_put_blocking(pio, sm, yellow); // turn LED yellow
         sleep_ms(500);
 
-        pio_sm_put_blocking(pio, sm, 0x00000000);
+        pio_sm_put_blocking(pio, sm, 0x00000000); // turn LED off
         sleep_ms(500);
     }
 }
