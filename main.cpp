@@ -9,7 +9,7 @@
 #include "ws2811.hpp"
 
 #define IS_RGBW false
-#define NUM_PIXELS 150
+#define NUM_PIXELS 21
 
 #ifdef PICO_DEFAULT_WS2812_PIN
 #define WS2812_PIN PICO_DEFAULT_WS2812_PIN
