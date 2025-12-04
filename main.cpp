@@ -20,18 +20,12 @@ int main() {
 
     ws2812_program_init(pio, sm, offset, LED_PIN, IS_RGBW);
 
-     // Choose your static color here:
-    uint32_t color = rgb(41, 24, 7);  
-
-    // Send the color to every LED one time
-    for (int i = 0; i < LED_COUNT; i++) {
-        pio_sm_put_blocking(pio, sm, color);
-    }
-
-    // Do nothing forever
     while (1) {
-        tight_loop_contents();
-    }
 
-    
+        for (int i = 0; i < LED_COUNT; i++) {
+            pio_sm_put_blocking(pio, sm, rgb(41, 24, 17));
+        }
+
+        sleep_ms(500);
+    }
 }
