@@ -26,7 +26,7 @@ int main() {
             pio_sm_put_blocking(pio, sm, rgb(41, 24, 7));
         }
 
-        // sleep_ms(500);
+        sleep_ms(500);
 
         // for (int i = 0; i < LED_COUNT; i++) {
         //     pio_sm_put_blocking(pio, sm, 0x00000000); // turn LED off
