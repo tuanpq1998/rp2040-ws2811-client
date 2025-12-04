@@ -2,7 +2,7 @@
 #include "pico/stdlib.h"
 #include "ws2812.hpp"
 
-constexpr uint WS2812_NUM_LEDS = 10;
+constexpr uint WS2812_NUM_LEDS = 30;
 constexpr uint WS2812_DATA_PIN = 21;
 
 int main() {
@@ -24,12 +24,13 @@ int main() {
     strip.show();
 
     while (true) {
-        for (uint i = 0; i < strip.getNumLeds(); ++i) {
-            strip.clear();
-            strip.setPixel(i, 255, 0, 0);
-            strip.show();
-            sleep_ms(100);
-        }
+        strip.clear();
+        strip.setPixel(0, 255, 0, 0);  // RED
+        strip.setPixel(1, 0, 255, 0);  // GREEN
+        strip.setPixel(2, 0, 0, 255);  // BLUE
+        strip.show();
+        sleep_ms(10);
+        printf("Loop\n");
     }
 
 }
