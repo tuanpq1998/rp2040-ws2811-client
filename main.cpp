@@ -51,21 +51,21 @@ int main() {
     while (1) {
 
         for (int i = 0; i < NUM_PIXELS; i++) {
-            put_pixel(pio, sm, urgb_u32(0xff, 0, 0));
+            put_pixel(pio, sm, urgb_u32(41, 16 + 8, 7));
             // pio_sm_put_blocking(pio, sm,  make_color(255, 0, 0));
         }
 
-        sleep_ms(5000);
-        for (int i = 0; i < NUM_PIXELS; i++) {
-            put_pixel(pio, sm, urgb_u32(0, 0xff, 0));
-        }
+        sleep_ms(30);
+        // for (int i = 0; i < NUM_PIXELS; i++) {
+        //     put_pixel(pio, sm, urgb_u32(0, 0xff, 0));
+        // }
         
-        sleep_ms(5000);
-        for (int i = 0; i < NUM_PIXELS; i++) {
-            put_pixel(pio, sm, urgb_u32(0, 0, 0xff));
-        }
+        // sleep_ms(5000);
+        // for (int i = 0; i < NUM_PIXELS; i++) {
+        //     put_pixel(pio, sm, urgb_u32(0, 0, 0xff));
+        // }
 
-        sleep_ms(5000);
+        // sleep_ms(5000);
     }
 }
 
