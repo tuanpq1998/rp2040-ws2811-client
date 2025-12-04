@@ -1,36 +1,32 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "ws2812.hpp"
+#include "hardware/pio.h"
+#include "ws2812.pio.h"
 
-constexpr uint WS2812_NUM_LEDS = 30;
-constexpr uint WS2812_DATA_PIN = 21;
+#define LED_PIN 21
+#define LED_COUNT 10
 
 int main() {
     stdio_init_all();
-    sleep_ms(3000);  // Give USB enough time to enumerate
+    sleep_ms(2000);
 
-    printf("USB OK. Initializing strip...\n");
+    printf("Init PIO...\n");
 
-    WS2812Client<WS2812_NUM_LEDS, WS2812_GRB> strip(pio0, WS2812_DATA_PIN, false);
+    PIO pio = pio0;
+    uint sm = 0;
 
-    printf("Strip initialized\n");
+    uint offset = pio_add_program(pio, &ws2812_program);
 
-    // quick sanity: set first LED green for 500ms then clear
-    strip.clear();
-    strip.setPixel(0, 0, 255, 0);
-    strip.show();
-    sleep_ms(500);
-    strip.clear();
-    strip.show();
+    ws2812_program_init(pio, sm, offset, LED_PIN, 800000);
 
-    while (true) {
-        strip.clear();
-        strip.setPixel(0, 255, 0, 0);  // RED
-        strip.setPixel(1, 0, 255, 0);  // GREEN
-        strip.setPixel(2, 0, 0, 255);  // BLUE
-        strip.show();
-        sleep_ms(10);
-        printf("Loop\n");
+    printf("PIO ready\n");
+
+    while (1) {
+        uint32_t color = 0x00FF0000; // red GRB
+        pio_sm_put_blocking(pio, sm, color << 8);
+        sleep_ms(500);
+
+        pio_sm_put_blocking(pio, sm, 0x00000000);
+        sleep_ms(500);
     }
-
 }
