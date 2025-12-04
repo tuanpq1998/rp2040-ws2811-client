@@ -8,7 +8,7 @@
 #define LED_COUNT 30
 
 uint32_t make_color(uint8_t r, uint8_t g, uint8_t b) {
-    return (g << 16) | (r << 8) | b;   // WS2812 = GRB
+    return (b << 16) | (r << 8) | g;   // BRG order
 }
 
 int main() {
