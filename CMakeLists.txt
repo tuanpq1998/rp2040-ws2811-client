@@ -14,7 +14,7 @@ add_executable(pico_test
 target_link_libraries(pico_test pico_stdlib)
 
 # If building on a different host than the Pico will be plugged into:
-add_definitions(-DPICO_STDIO_USB_RESET_INTERFACE_SUPPORT=1)
+#add_definitions(-DPICO_STDIO_USB_RESET_INTERFACE_SUPPORT=1)
 
 pico_enable_stdio_usb(pico_test 1)
 pico_enable_stdio_uart(pico_test 0)
