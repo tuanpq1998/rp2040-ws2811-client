@@ -66,7 +66,13 @@ int main() {
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
                 uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
-                put_pixel(pio, sm, urgb_u32(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b));
+                
+                // modify color: G + 8
+                uint16_t g_tmp = leds[index].colors.g + 8;
+                if (g_tmp > 255) g_tmp = 255;
+                else if (g_tmp == 8) g_tmp = 0;
+
+                put_pixel(pio, sm, urgb_u32(leds[index].colors.r, static_cast<uint8_t>(g_tmp), leds[index].colors.b));
             }
         }
  
