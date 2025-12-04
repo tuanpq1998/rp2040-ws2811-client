@@ -278,10 +278,10 @@ public:
     auto leds = std::array<RGBLED, NUM_LEDS>();
 printf("before getLEDsAtomic\n");
     channel_config_set_chain_to(&dma_gather_conf, dma_gather_chan);
-    // dma_channel_wait_for_finish_blocking(dma_gather_chan);
-    if (!dma_wait_timeout(dma_gather_chan, 1500)) {
-      return leds;
-    }
+    dma_channel_wait_for_finish_blocking(dma_gather_chan);
+    // if (!dma_wait_timeout(dma_gather_chan, 1500)) {
+    //   return leds;
+    // }
     for (uint i = 0; i < NUM_LEDS; i++) {
       leds[i] = ledStateToLED(led_state[i]);
     }
