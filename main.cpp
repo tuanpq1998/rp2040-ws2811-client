@@ -6,6 +6,8 @@
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
 
+#include "ws2811.hpp"
+
 #define IS_RGBW false
 #define NUM_PIXELS 150
 
@@ -38,6 +40,11 @@ static inline uint32_t urgbw_u32(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
             (uint32_t) (b);
 }
 
+static void print_led_state(const RGBLED led) {
+    printf("%3u\t%3u\t%3u\n", led.colors.r, led.colors.g, led.colors.b);
+}
+
+
 int main() {
 
     stdio_init_all();
@@ -48,24 +55,23 @@ int main() {
 
     ws2812_program_init(pio, sm, offset, WS2812_PIN, 800000, IS_RGBW);
 
+    auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
+
     while (1) {
 
-        for (int i = 0; i < NUM_PIXELS; i++) {
-            put_pixel(pio, sm, urgb_u32(41, 16 + 8, 7));
-            // pio_sm_put_blocking(pio, sm,  make_color(255, 0, 0));
+        const auto leds = ws2811.getLEDsAtomic();
+        for (auto it = leds.begin(); it != leds.end(); it++) {
+            printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
+            print_led_state(*it);
+
+            for (uint i = 0; i < NUM_PIXELS; ++i) {
+                uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
+                put_pixel(pio, sm, urgb_u32(leds[i].colors.r, leds[i].colors.g, leds[i].colors.b));
+            }
         }
-
+ 
         sleep_ms(30);
-        // for (int i = 0; i < NUM_PIXELS; i++) {
-        //     put_pixel(pio, sm, urgb_u32(0, 0xff, 0));
-        // }
-        
-        // sleep_ms(5000);
-        // for (int i = 0; i < NUM_PIXELS; i++) {
-        //     put_pixel(pio, sm, urgb_u32(0, 0, 0xff));
-        // }
 
-        // sleep_ms(5000);
     }
 }
 
