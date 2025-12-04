@@ -14,7 +14,7 @@
 #ifdef PICO_DEFAULT_WS2812_PIN
 #define WS2812_PIN PICO_DEFAULT_WS2812_PIN
 #else
-#define WS2812_PIN 21
+#define WS2812_PIN 17
 #endif
 
 #if WS2812_PIN >= NUM_BANK0_GPIOS
@@ -66,7 +66,7 @@ int main() {
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
                 uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
-                put_pixel(pio, sm, urgb_u32(leds[i].colors.r, leds[i].colors.g, leds[i].colors.b));
+                put_pixel(pio, sm, urgb_u32(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b));
             }
         }
  
