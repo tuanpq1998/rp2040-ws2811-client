@@ -263,7 +263,7 @@ public:
 
   const std::array<RGBLED, NUM_LEDS> getLEDsAtomic() {
     auto leds = std::array<RGBLED, NUM_LEDS>();
-
+printf("before getLEDsAtomic\n");
     channel_config_set_chain_to(&dma_gather_conf, dma_gather_chan);
     dma_channel_wait_for_finish_blocking(dma_gather_chan);
     for (uint i = 0; i < NUM_LEDS; i++) {
@@ -279,7 +279,7 @@ public:
     }
     channel_config_set_chain_to(&dma_gather_conf, dma_ctrl_chan);
     dma_channel_start(dma_ctrl_chan);
-
+printf("after getLEDsAtomic\n");
     return leds;
   }
 
