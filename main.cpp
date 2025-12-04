@@ -7,8 +7,8 @@
 #define IS_RGBW false  // you are using RGB, not RGBW
 #define LED_COUNT 30
 
-static inline uint32_t rgb(uint8_t r, uint8_t g, uint8_t b) {
-    return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+uint32_t make_color(uint8_t r, uint8_t g, uint8_t b) {
+    return (g << 16) | (r << 8) | b;   // WS2812 = GRB
 }
 
 int main() {
@@ -20,10 +20,11 @@ int main() {
 
     ws2812_program_init(pio, sm, offset, LED_PIN, IS_RGBW);
 
+    uint32_t color = make_color(41, 24, 17);
     while (1) {
 
         for (int i = 0; i < LED_COUNT; i++) {
-            pio_sm_put_blocking(pio, sm, rgb(41, 24, 17));
+            pio_sm_put_blocking(pio, sm, color);
         }
 
         sleep_ms(500);
