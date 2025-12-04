@@ -15,4 +15,21 @@ int main() {
 
     printf("Strip initialized\n");
 
+    // quick sanity: set first LED green for 500ms then clear
+    strip.clear();
+    strip.setPixel(0, 0, 255, 0);
+    strip.show();
+    sleep_ms(500);
+    strip.clear();
+    strip.show();
+
+    while (true) {
+        for (uint i = 0; i < strip.getNumLeds(); ++i) {
+            strip.clear();
+            strip.setPixel(i, 255, 0, 0);
+            strip.show();
+            sleep_ms(100);
+        }
+    }
+
 }
