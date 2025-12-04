@@ -4,7 +4,7 @@
 #include "ws2812.pio.h"
 
 #define LED_PIN 21
-#define LED_COUNT 10
+#define LED_COUNT 30
 
 int main() {
     stdio_init_all();
