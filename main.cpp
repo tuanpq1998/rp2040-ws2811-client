@@ -20,13 +20,22 @@ int main() {
 
     ws2812_program_init(pio, sm, offset, LED_PIN, IS_RGBW);
 
-    uint32_t color = make_color(41, 24, 17);
     while (1) {
 
         for (int i = 0; i < LED_COUNT; i++) {
-            pio_sm_put_blocking(pio, sm, color);
+            pio_sm_put_blocking(pio, sm,  make_color(255, 0, 0));
         }
 
-        sleep_ms(500);
+        sleep_ms(5000);
+        for (int i = 0; i < LED_COUNT; i++) {
+            pio_sm_put_blocking(pio, sm,  make_color(0, 255, 0));
+        }
+
+        sleep_ms(5000);
+        for (int i = 0; i < LED_COUNT; i++) {
+            pio_sm_put_blocking(pio, sm,  make_color(0, 0, 255));
+        }
+
+        sleep_ms(5000);
     }
 }
