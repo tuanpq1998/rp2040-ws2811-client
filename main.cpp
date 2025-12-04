@@ -60,6 +60,7 @@ int main() {
     while (1) {
 
         const auto leds = ws2811.getLEDsAtomic();
+        printf("input size: %d", leds.size()  );
         for (auto it = leds.begin(); it != leds.end(); it++) {
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
             print_led_state(*it);
