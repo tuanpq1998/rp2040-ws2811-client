@@ -261,21 +261,29 @@ public:
     return ledStateToLED(led_state[idx]);
   }
 
+  bool dma_wait_timeout(uint chan, uint32_t timeout_ms) {
+    uint64_t start = time_us_64();
+    uint64_t timeout_us = (uint64_t)timeout_ms * 1000;
+
+    while (dma_channel_is_busy(chan)) {
+        if (time_us_64() - start >= timeout_us) {
+            return false;  // timeout
+        }
+        tight_loop_contents(); // optional
+    }
+    return true; // finished
+}
+
   const std::array<RGBLED, NUM_LEDS> getLEDsAtomic() {
     auto leds = std::array<RGBLED, NUM_LEDS>();
 printf("before getLEDsAtomic\n");
     channel_config_set_chain_to(&dma_gather_conf, dma_gather_chan);
-    dma_channel_wait_for_finish_blocking(dma_gather_chan);
+    // dma_channel_wait_for_finish_blocking(dma_gather_chan);
+    if (!dma_wait_timeout(dma_gather_chan, 1500)) {
+      return leds;
+    }
     for (uint i = 0; i < NUM_LEDS; i++) {
       leds[i] = ledStateToLED(led_state[i]);
-      // RGBLED origin = ledStateToLED(led_state[i]);
-
-      // // modification: G = G + 8 
-      // uint16_t g_tmp = origin.colors.g + 8;   // work in 16-bit to avoid wrap
-      // if (g_tmp > 255) g_tmp = 255;        // clamp to max 255
-      // origin.colors.g = static_cast<uint8_t>(g_tmp);
-      // // store full RGBLED back into the array
-      // leds[i] = origin;
     }
     channel_config_set_chain_to(&dma_gather_conf, dma_ctrl_chan);
     dma_channel_start(dma_ctrl_chan);
