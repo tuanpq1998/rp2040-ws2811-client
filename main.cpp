@@ -7,6 +7,10 @@
 #define IS_RGBW false  // you are using RGB, not RGBW
 #define LED_COUNT 30
 
+static inline uint32_t rgb(uint8_t r, uint8_t g, uint8_t b) {
+    return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+}
+
 int main() {
     stdio_init_all();
 
@@ -18,16 +22,15 @@ int main() {
 
     while (1) {
 
-        // Set all LEDs to yellow
         for (int i = 0; i < LED_COUNT; i++) {
-            pio_sm_put_blocking(pio, sm, 0x00FF0000); // green
+            pio_sm_put_blocking(pio, sm, rgb(41, 24, 7));
         }
 
-        sleep_ms(500);
+        // sleep_ms(500);
 
-        for (int i = 0; i < LED_COUNT; i++) {
-            pio_sm_put_blocking(pio, sm, 0x00000000); // turn LED off
-        }
-        sleep_ms(500);
+        // for (int i = 0; i < LED_COUNT; i++) {
+        //     pio_sm_put_blocking(pio, sm, 0x00000000); // turn LED off
+        // }
+        // sleep_ms(500);
     }
 }
