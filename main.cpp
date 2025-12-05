@@ -49,14 +49,14 @@ float GAMMA = 1.1f;  // tune this value
 
 float R_SCALE = 1.00f;
 float G_SCALE = 1.5f;
-float B_SCALE = 1.00f;
+float B_SCALE = 1.2f;
 
-uint8_t gammaTable[256];
+uint8_t gamma_table[256];
 
-void buildGammaTable() {
+void build_gamma_table() {
     for (int i = 0; i < 256; i++) {
         float x = powf(i / 255.0f, GAMMA);
-        gammaTable[i] = (uint8_t)(x * 255.0f + 0.5f);
+        gamma_table[i] = (uint8_t)(x * 255.0f + 0.5f);
     }
 }
 
@@ -68,9 +68,9 @@ inline void correctColorFast(uint8_t r, uint8_t g, uint8_t b,
                              uint8_t &r2, uint8_t &g2, uint8_t &b2)
 {
     // Lookup gamma
-    int rf = gammaTable[r];
-    int gf = gammaTable[g];
-    int bf = gammaTable[b];
+    int rf = gamma_table[r];
+    int gf = gamma_table[g];
+    int bf = gamma_table[b];
 
     // Per-channel scale
     rf = (int)(rf * R_SCALE);
@@ -86,7 +86,7 @@ inline void correctColorFast(uint8_t r, uint8_t g, uint8_t b,
 int main() {
 
     stdio_init_all();
-    buildGammaTable();
+    build_gamma_table();
 
     PIO pio = pio0;
     int sm = 0;
