@@ -115,7 +115,7 @@ int main() {
                 correct_color_fast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2);
                 
                 put_pixel(pio, sm0, urgb_u32(r2, g2, b2));
-                put_pixel(pio, sm1, urgb_u32(r2, g2, b2));
+                put_pixel(pio, sm1, urgb_u32(255, 0, 0));
             }
         }
  
