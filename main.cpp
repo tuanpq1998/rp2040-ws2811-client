@@ -47,18 +47,18 @@ static void print_led_state(const RGBLED led) {
     printf("%3u\t%3u\t%3u\n", led.colors.r, led.colors.g, led.colors.b);
 }
 
-float GAMMA = 1.1f;  // tune this value
+float GAMMAS = [1.1f, 1.0f];
 
-float R_SCALE = 1.00f;
-float G_SCALE = 1.5f;
-float B_SCALE = 1.2f;
+float R_SCALES = [1.00f, 0.9];
+float G_SCALES = [1.5f, 1.375f];
+float B_SCALES = [1.2f, 1.2f];
 
-uint8_t gamma_table[256];
+uint8_t gamma_table[2][256];
 
-void build_gamma_table() {
+void build_gamma_table(int index) {
     for (int i = 0; i < 256; i++) {
-        float x = powf(i / 255.0f, GAMMA);
-        gamma_table[i] = (uint8_t)(x * 255.0f + 0.5f);
+        float x = powf(i / 255.0f, GAMMAS[index]);
+        gamma_table[index][i] = (uint8_t)(x * 255.0f + 0.5f);
     }
 }
 
@@ -67,17 +67,17 @@ inline uint8_t clamp8(int v) {
 }
 
 inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
-                             uint8_t &r2, uint8_t &g2, uint8_t &b2)
+                             uint8_t &r2, uint8_t &g2, uint8_t &b2, uint index)
 {
     // Lookup gamma
-    int rf = gamma_table[r];
-    int gf = gamma_table[g];
-    int bf = gamma_table[b];
+    int rf = gamma_table[index][r];
+    int gf = gamma_table[index][g];
+    int bf = gamma_table[index][b];
 
     // Per-channel scale
-    rf = (int)(rf * R_SCALE);
-    gf = (int)(gf * G_SCALE);
-    bf = (int)(bf * B_SCALE);
+    rf = (int)(rf * R_SCALES[index]);
+    gf = (int)(gf * G_SCALES[index]);
+    bf = (int)(bf * B_SCALES[index]);
 
     // Clamp
     r2 = clamp8(rf);
@@ -88,7 +88,9 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
 int main() {
 
     stdio_init_all();
-    build_gamma_table();
+    for (uint i = 0; i < GAMMAS.length; i++) {
+        build_gamma_table(i);
+    }
 
     PIO pio = pio0;
     uint offset = pio_add_program(pio, &ws2812_program);
@@ -112,10 +114,13 @@ int main() {
                 uint index = i % NUM_LEDS_TO_EMULATE;
 
                 uint8_t r2, g2, b2;
-                correct_color_fast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2);
+                correct_color_fast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2, 0);
+                
+                uint8_t r3, g3, b3;
+                correct_color_fast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r3, g3, b3, 1);
                 
                 put_pixel(pio, sm0, urgb_u32(r2, g2, b2));
-                put_pixel(pio, sm1, urgb_u32(255, 0, 0));
+                put_pixel(pio, sm1, urgb_u32(r3, g3, b3));
             }
         }
  
