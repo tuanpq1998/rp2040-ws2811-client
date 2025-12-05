@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cmath>
 
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
@@ -44,10 +45,48 @@ static void print_led_state(const RGBLED led) {
     printf("%3u\t%3u\t%3u\n", led.colors.r, led.colors.g, led.colors.b);
 }
 
+float GAMMA = 1.1f;  // tune this value
+
+float R_SCALE = 1.00f;
+float G_SCALE = 1.5f;
+float B_SCALE = 1.00f;
+
+uint8_t gammaTable[256];
+
+void buildGammaTable() {
+    for (int i = 0; i < 256; i++) {
+        float x = powf(i / 255.0f, GAMMA);
+        gammaTable[i] = (uint8_t)(x * 255.0f + 0.5f);
+    }
+}
+
+inline uint8_t clamp8(int v) {
+    return (v < 0) ? 0 : (v > 255 ? 255 : v);
+}
+
+inline void correctColorFast(uint8_t r, uint8_t g, uint8_t b,
+                             uint8_t &r2, uint8_t &g2, uint8_t &b2)
+{
+    // Lookup gamma
+    int rf = gammaTable[r];
+    int gf = gammaTable[g];
+    int bf = gammaTable[b];
+
+    // Per-channel scale
+    rf = (int)(rf * R_SCALE);
+    gf = (int)(gf * G_SCALE);
+    bf = (int)(bf * B_SCALE);
+
+    // Clamp
+    r2 = clamp8(rf);
+    g2 = clamp8(gf);
+    b2 = clamp8(bf);
+}
 
 int main() {
 
     stdio_init_all();
+    buildGammaTable();
 
     PIO pio = pio0;
     int sm = 0;
@@ -67,13 +106,11 @@ int main() {
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
                 uint index = i % NUM_LEDS_TO_EMULATE;
-                
-                // modify color: G + 8
-                uint16_t g_tmp = leds[index].colors.g + 8;
-                if (g_tmp > 255) g_tmp = 255;
-                else if (g_tmp == 8) g_tmp = 0;
 
-                put_pixel(pio, sm, urgb_u32(leds[index].colors.r, static_cast<uint8_t>(g_tmp), leds[index].colors.b));
+                uint8_t r2, g2, b2;
+                correctColorFast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2);
+                
+                put_pixel(pio, sm, urgb_u32(r2, g2, b2));
             }
         }
  
