@@ -15,8 +15,10 @@
 #ifdef PICO_DEFAULT_WS2812_PIN
 #define WS2812_PIN PICO_DEFAULT_WS2812_PIN
 #else
-#define WS2812_PIN 17
+#define WS2812_PIN 17 // for leopard fan
 #endif
+
+#define WS2812_PIN_2 18 // for aio fan
 
 #if WS2812_PIN >= NUM_BANK0_GPIOS
 #error Attempting to use a pin>=32 on a platform that does not support it
@@ -89,10 +91,12 @@ int main() {
     build_gamma_table();
 
     PIO pio = pio0;
-    int sm = 0;
     uint offset = pio_add_program(pio, &ws2812_program);
 
-    ws2812_program_init(pio, sm, offset, WS2812_PIN, 800000, IS_RGBW);
+    int sm0 = pio_claim_unused_sm(pio, true);
+    int sm1 = pio_claim_unused_sm(pio, true);
+    ws2812_program_init(pio, sm0, offset, WS2812_PIN, 800000, IS_RGBW);
+    ws2812_program_init(pio, sm1, offset, WS2812_PIN_2, 800000, IS_RGBW);
 
     auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
 
@@ -110,7 +114,8 @@ int main() {
                 uint8_t r2, g2, b2;
                 correct_color_fast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2);
                 
-                put_pixel(pio, sm, urgb_u32(r2, g2, b2));
+                put_pixel(pio, sm0, urgb_u32(r2, g2, b2));
+                put_pixel(pio, sm1, urgb_u32(r2, g2, b2));
             }
         }
  
