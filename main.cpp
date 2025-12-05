@@ -64,7 +64,7 @@ inline uint8_t clamp8(int v) {
     return (v < 0) ? 0 : (v > 255 ? 255 : v);
 }
 
-inline void correctColorFast(uint8_t r, uint8_t g, uint8_t b,
+inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
                              uint8_t &r2, uint8_t &g2, uint8_t &b2)
 {
     // Lookup gamma
@@ -108,7 +108,7 @@ int main() {
                 uint index = i % NUM_LEDS_TO_EMULATE;
 
                 uint8_t r2, g2, b2;
-                correctColorFast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2);
+                correct_color_fast(leds[index].colors.r, leds[index].colors.g, leds[index].colors.b, r2, g2, b2);
                 
                 put_pixel(pio, sm, urgb_u32(r2, g2, b2));
             }
