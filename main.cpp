@@ -9,7 +9,7 @@
 #include "ws2811.hpp"
 
 #define IS_RGBW false
-#define NUM_PIXELS 24
+#define NUM_PIXELS 30
 
 #ifdef PICO_DEFAULT_WS2812_PIN
 #define WS2812_PIN PICO_DEFAULT_WS2812_PIN
@@ -66,7 +66,7 @@ int main() {
             print_led_state(*it);
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
-                uint index = i > NUM_LEDS_TO_EMULATE ? (NUM_LEDS_TO_EMULATE - 1)  : i;
+                uint index = i % NUM_LEDS_TO_EMULATE;
                 
                 // modify color: G + 8
                 uint16_t g_tmp = leds[index].colors.g + 8;
