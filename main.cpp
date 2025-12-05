@@ -47,11 +47,11 @@ static void print_led_state(const RGBLED led) {
     printf("%3u\t%3u\t%3u\n", led.colors.r, led.colors.g, led.colors.b);
 }
 
-float GAMMAS[] = {1.1f, 1.0f};
+std::array<float,2> GAMMAS[] = {1.1f, 1.0f};
 
-float R_SCALES[] = {1.00f, 0.9};
-float G_SCALES[] = {1.5f, 1.375f};
-float B_SCALES[] = {1.2f, 1.2f};
+std::array<float,2> R_SCALES[] = {1.00f, 0.9};
+std::array<float,2> G_SCALES[] = {1.5f, 1.375f};
+std::array<float,2> B_SCALES[] = {1.2f, 1.2f};
 
 uint8_t gamma_table[2][256];
 
@@ -88,7 +88,7 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
 int main() {
 
     stdio_init_all();
-    for (uint i = 0; i < sizeof(GAMMAS); i++) {
+    for (uint i = 0; i < GAMMAS.size(); i++) {
         build_gamma_table(i);
     }
 
