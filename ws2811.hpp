@@ -283,7 +283,7 @@ public:
       timeout_count++;
       return leds;
     }
-    timeout_count = 0;
+    resetTimeoutCount();
     for (uint i = 0; i < NUM_LEDS; i++) {
       leds[i] = ledStateToLED(led_state[i]);
     }
@@ -298,5 +298,9 @@ public:
 
   bool isSleep() {
     return timeout_count >= 10;
+  }
+
+  void resetTimeoutCount() {
+    timeout_count = 0;
   }
 };

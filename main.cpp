@@ -96,7 +96,7 @@ int main() {
     stdio_init_all();
     sleep_ms(2000);  
 
-    printf("init main"  );
+    printf("init main\n");
    
     gpio_init(LED_PWR_PIN);
     gpio_set_dir(LED_PWR_PIN, GPIO_IN);
@@ -129,6 +129,7 @@ int main() {
             // sleep_run_from_xosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
         }
+        ws2811.resetTimeoutCount();
         
         for (auto it = leds.begin(); it != leds.end(); it++) {
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
