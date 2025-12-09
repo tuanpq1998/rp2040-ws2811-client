@@ -3,8 +3,12 @@
 #include <cmath>
 
 #include "pico/stdlib.h"
+#include "pico/sleep.h"
+
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
+#include "hardware/rosc.h"
+
 #include "ws2812.pio.h"
 
 #include "ws2811.hpp"
