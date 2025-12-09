@@ -94,11 +94,12 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
 int main() {
 
     stdio_init_all();
-
-    gpio_init(LED_PWR_PIN);
-    gpio_set_dir(LED_PWR_PIN, GPIO_IN);
+    sleep_ms(2000);  
 
     printf("init main"  );
+   
+    gpio_init(LED_PWR_PIN);
+    gpio_set_dir(LED_PWR_PIN, GPIO_IN);
 
     int gm_len = sizeof(GAMMAS) / sizeof(GAMMAS[0]);
     for (uint i = 0; i < gm_len; i++) {
@@ -125,7 +126,7 @@ int main() {
             printf("dormant mode\n");
             fflush(stdout);
             sleep_ms(10);  
-            sleep_run_from_xosc();
+            // sleep_run_from_xosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
         }
         
