@@ -36,6 +36,9 @@ target_link_libraries(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${PICO_EXTRAS_PATH}/src/rp2_common/pico_sleep/include
+    ${PICO_SDK_PATH}/src/common/pico_base/include
+    ${PICO_SDK_PATH}/src/rp2_common/hardware_base/include
+    ${PICO_SDK_PATH}/src/rp2_common/hardware_rosc/include
 )
 
 pico_add_extra_outputs(${PROJECT_NAME})
