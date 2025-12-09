@@ -121,7 +121,8 @@ int main() {
         printf("LED_PWR_PIN=%d\n", is_led_pwr_on);
         const auto leds = ws2811.getLEDsAtomic();
         printf("input size: %d", leds.size()  );
-        if (ws2811.isSleep() && !is_led_pwr_on) {
+        if (is_led_pwr_on) ws2811.resetTimeoutCount();
+        else if (ws2811.isSleep()) {
             // dormant mode
             printf("dormant mode\n");
             fflush(stdout);
@@ -129,7 +130,6 @@ int main() {
             // sleep_run_from_xosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
         }
-        ws2811.resetTimeoutCount();
         
         for (auto it = leds.begin(); it != leds.end(); it++) {
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
