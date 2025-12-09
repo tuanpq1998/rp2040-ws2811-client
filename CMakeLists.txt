@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 include(pico_sdk_import.cmake)
 
+include(pico_extras_import.cmake)
+
 project(rp2040-ws2811-client C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -32,11 +34,6 @@ target_link_libraries(${PROJECT_NAME}
     hardware_pio
     hardware_dma
     pico_sleep        # từ pico-extras
-)
-
-# NẾU vẫn không tìm được pico/sleep.h thì chỉ thêm include của pico_sleep, không thêm SDK
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${PICO_EXTRAS_PATH}/src/rp2_common/pico_sleep/include
 )
 
 pico_add_extra_outputs(${PROJECT_NAME})
