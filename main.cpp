@@ -16,6 +16,8 @@
 #define IS_RGBW false
 #define NUM_PIXELS 30
 
+#define LED_PWR_PIN 13
+
 #ifdef PICO_DEFAULT_WS2812_PIN
 #define WS2812_PIN PICO_DEFAULT_WS2812_PIN
 #else
@@ -93,6 +95,9 @@ int main() {
 
     stdio_init_all();
 
+    gpio_init(LED_PWR_PIN);
+    gpio_set_dir(LED_PWR_PIN, GPIO_IN);
+
     printf("init main"  );
 
     int gm_len = sizeof(GAMMAS) / sizeof(GAMMAS[0]);
@@ -111,24 +116,21 @@ int main() {
     auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
 
     while (1) {
-
+        bool is_led_pwr_on = gpio_get(LED_PWR_PIN);
+        printf("LED_PWR_PIN=%d\n", is_led_pwr_on);
         const auto leds = ws2811.getLEDsAtomic();
         printf("input size: %d", leds.size()  );
         for (auto it = leds.begin(); it != leds.end(); it++) {
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
             print_led_state(*it);
 
-            if (ws2811.isSleep()) {
+            if (ws2811.isSleep() && !is_led_pwr_on) {
                 // dormant mode
                 printf("dormant mode" );
 
-                gpio_init(13);
-                gpio_set_dir(13, GPIO_IN);
-                // gpio_pull_up(13);
-
                 sleep_run_from_xosc();
 
-                sleep_goto_dormant_until_level_high(13);
+                sleep_goto_dormant_until_level_high(LED_PWR_PIN);
             }
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
