@@ -13,8 +13,6 @@
 
 #include "ws2811.hpp"
 
-#define LED_DEBUG_PIN 25
-
 #define IS_RGBW false
 #define NUM_PIXELS 30
 
@@ -130,7 +128,7 @@ int main() {
 
                 sleep_run_from_xosc();
 
-                sleep_goto_dormant_until_edge_high(DATA_IN_PIN);
+                sleep_goto_dormant_until_level_high(DATA_IN_PIN);
             }
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
