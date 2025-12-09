@@ -122,10 +122,10 @@ int main() {
         printf("input size: %d", leds.size()  );
         if (ws2811.isSleep() && !is_led_pwr_on) {
             // dormant mode
-            printf("dormant mode" );
-
+            printf("dormant mode\n");
+            fflush(stdout);
+            sleep_ms(10);  
             sleep_run_from_xosc();
-
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
         }
         
