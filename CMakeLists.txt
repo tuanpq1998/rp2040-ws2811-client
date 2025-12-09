@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.13)
 include(pico_sdk_import.cmake)
-include(${PICO_EXTRAS_PATH}/external/pico_extras_import.cmake)
-message(STATUS "PICO_EXTRAS_PATH = ${PICO_EXTRAS_PATH}")
+#include(${PICO_EXTRAS_PATH}/external/pico_extras_import.cmake)
+#message(STATUS "PICO_EXTRAS_PATH = ${PICO_EXTRAS_PATH}")
 
 project(rp2040-ws2811-client)
 
 pico_sdk_init()
+
+add_subdirectory(${PICO_EXTRAS_PATH} pico-extras)
 
 add_executable(${PROJECT_NAME}
     main.cpp ws2811.cpp
