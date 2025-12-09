@@ -34,4 +34,8 @@ target_link_libraries(${PROJECT_NAME}
     pico_sleep
 )
 
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${PICO_EXTRAS_PATH}/src/rp2_common/pico_sleep/include
+)
+
 pico_add_extra_outputs(${PROJECT_NAME})
