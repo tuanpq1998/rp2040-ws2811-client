@@ -95,13 +95,7 @@ int main() {
 
     stdio_init_all();
 
-    for (int i = 0; i < 3; i++) {
-        gpio_put(LED_DEBUG_PIN, 1);
-        sleep_ms(200);
-        gpio_put(LED_DEBUG_PIN, 0);
-        sleep_ms(200);
-    }
-
+    printf("init main"  );
 
     int gm_len = sizeof(GAMMAS) / sizeof(GAMMAS[0]);
     for (uint i = 0; i < gm_len; i++) {
@@ -128,12 +122,7 @@ int main() {
 
             if (ws2811.isSleep()) {
                 // dormant mode
-                for (int i = 0; i < 5; i++) {
-                    gpio_put(LED_DEBUG_PIN, 1);
-                    sleep_ms(200);
-                    gpio_put(LED_DEBUG_PIN, 0);
-                    sleep_ms(200);
-                }
+                printf("dormant mode" );
 
                 gpio_init(DATA_IN_PIN);
                 gpio_set_dir(DATA_IN_PIN, GPIO_IN);

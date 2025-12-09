@@ -10,10 +10,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
 
-# Debug: xem đường dẫn
-message(STATUS "PICO_EXTRAS_PATH = ${PICO_EXTRAS_PATH}")
-
-# Thêm pico-extras như subproject
 add_subdirectory(${PICO_EXTRAS_PATH} pico-extras)
 
 add_executable(${PROJECT_NAME}
