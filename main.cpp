@@ -127,8 +127,13 @@ int main() {
             printf("dormant mode\n");
             fflush(stdout);
             sleep_ms(10);  
-            // sleep_run_from_xosc();
+            
+            sleep_run_from_xosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
+            
+            sleep_power_up();
+            printf("wake from dormant, pin=%d\n", gpio_get(LED_PWR_PIN));
+            fflush(stdout);
         }
         
         for (auto it = leds.begin(); it != leds.end(); it++) {
