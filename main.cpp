@@ -122,13 +122,13 @@ int main() {
                 // dormant mode
                 printf("dormant mode" );
 
-                gpio_init(DATA_IN_PIN);
-                gpio_set_dir(DATA_IN_PIN, GPIO_IN);
-                gpio_pull_up(DATA_IN_PIN);
+                gpio_init(20);
+                gpio_set_dir(20, GPIO_IN);
+                gpio_pull_up(20);
 
                 sleep_run_from_xosc();
 
-                sleep_goto_dormant_until_level_high(DATA_IN_PIN);
+                sleep_goto_dormant_until_edge_high(20);
             }
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
