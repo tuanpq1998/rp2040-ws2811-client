@@ -23,7 +23,7 @@ pico_enable_stdio_usb(${PROJECT_NAME} 1)
 pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
 # Add the standard library to the build
-target_link_libraries(${PROJECT_NAME} pico_stdlib pico_multicore pico_mem_ops hardware_pio hardware_dma)
+target_link_libraries(${PROJECT_NAME} pico_stdlib pico_multicore pico_mem_ops hardware_pio hardware_dma pico_sleep)
 
 
 pico_add_extra_outputs(${PROJECT_NAME})
