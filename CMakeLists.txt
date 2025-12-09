@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 include(pico_sdk_import.cmake)
-include(pico_extras_import.cmake)
+include(${PICO_EXTRAS_PATH}/external/pico_extras_import.cmake)
 
 project(rp2040-ws2811-client)
 
