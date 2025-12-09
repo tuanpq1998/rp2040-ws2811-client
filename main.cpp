@@ -9,6 +9,8 @@
 
 #include "ws2811.hpp"
 
+#define LED_DEBUG_PIN 25
+
 #define IS_RGBW false
 #define NUM_PIXELS 30
 
@@ -88,6 +90,15 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
 int main() {
 
     stdio_init_all();
+
+    for (int i = 0; i < 3; i++) {
+        gpio_put(LED_DEBUG_PIN, 1);
+        sleep_ms(200);
+        gpio_put(LED_DEBUG_PIN, 0);
+        sleep_ms(200);
+    }
+
+
     int gm_len = sizeof(GAMMAS) / sizeof(GAMMAS[0]);
     for (uint i = 0; i < gm_len; i++) {
         build_gamma_table(i);
@@ -110,6 +121,24 @@ int main() {
         for (auto it = leds.begin(); it != leds.end(); it++) {
             printf("[%7u] LED %u: ", time_us_32() / 1000, std::distance(leds.begin(), it));
             print_led_state(*it);
+
+            if (ws2811.isSleep()) {
+                // dormant mode
+                for (int i = 0; i < 5; i++) {
+                    gpio_put(LED_DEBUG_PIN, 1);
+                    sleep_ms(200);
+                    gpio_put(LED_DEBUG_PIN, 0);
+                    sleep_ms(200);
+                }
+
+                gpio_init(DATA_IN_PIN);
+                gpio_set_dir(DATA_IN_PIN, GPIO_IN);
+                gpio_pull_up(DATA_IN_PIN);
+
+                sleep_run_from_xosc();
+
+                sleep_goto_dormant_until_edge_high(DATA_IN_PIN);
+            }
 
             for (uint i = 0; i < NUM_PIXELS; ++i) {
                 uint index = i % NUM_LEDS_TO_EMULATE;

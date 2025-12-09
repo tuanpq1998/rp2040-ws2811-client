@@ -33,6 +33,7 @@ private:
   PIO pio;
   uint offset;
   uint sm;
+  uint timeout_count = 0;
   pio_sm_config sm_conf;
 
   uint dma_ctrl_chan;
@@ -279,8 +280,10 @@ public:
     channel_config_set_chain_to(&dma_gather_conf, dma_gather_chan);
     // dma_channel_wait_for_finish_blocking(dma_gather_chan);
     if (!dma_wait_timeout(dma_gather_chan, 1500)) {
+      timeout_count++;
       return leds;
     }
+    timeout_count = 0;
     for (uint i = 0; i < NUM_LEDS; i++) {
       leds[i] = ledStateToLED(led_state[i]);
     }
@@ -291,5 +294,9 @@ public:
 
   const uint getNumLEDs() const {
     return NUM_LEDS;
+  }
+
+  bool isSleep() {
+    return timeout_count >= 10;
   }
 };
