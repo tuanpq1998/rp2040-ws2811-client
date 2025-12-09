@@ -33,7 +33,7 @@ target_link_libraries(${PROJECT_NAME}
     pico_mem_ops
     hardware_pio
     hardware_dma
-    pico_sleep        # từ pico-extras
+    hardware_sleep
 )
 
 pico_add_extra_outputs(${PROJECT_NAME})
