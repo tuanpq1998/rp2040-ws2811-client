@@ -134,6 +134,13 @@ int main() {
             sleep_power_up();
             printf("wake from dormant, pin=%d\n", gpio_get(LED_PWR_PIN));
             fflush(stdout);
+
+            for (int i = 0; i < 50; i++) {
+                bool v = gpio_get(LED_PWR_PIN);
+                printf("after wake #%d, pin=%d\n", i, v);
+                fflush(stdout);
+                sleep_ms(100);
+            }
         }
         
         for (auto it = leds.begin(); it != leds.end(); it++) {
