@@ -96,7 +96,11 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
 void init_usb_cdc() {
     tusb_init();
     stdio_usb_init();
-    while (!tud_cdc_connected()) tud_task();
+    while (!tud_cdc_connected()) {
+        sleep_ms(10);
+        tud_task();
+    }
+    printf("init usb\n");
 }
 
 int main() {
@@ -126,6 +130,7 @@ int main() {
     auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
 
     while (1) {
+        tud_task();
         bool is_led_pwr_on = gpio_get(LED_PWR_PIN);
         printf("LED_PWR_PIN=%d\n", is_led_pwr_on);
         const auto leds = ws2811.getLEDsAtomic();
