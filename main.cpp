@@ -120,7 +120,7 @@ int main() {
         bool is_led_pwr_on = gpio_get(LED_PWR_PIN);
         printf("LED_PWR_PIN=%d\n", is_led_pwr_on);
         const auto leds = ws2811.getLEDsAtomic();
-        printf("input size: %d", leds.size()  );
+        printf("input size: %d\n", leds.size()  );
         if (is_led_pwr_on) ws2811.resetTimeoutCount();
         else if (ws2811.isSleep()) {
             // dormant mode
@@ -128,10 +128,13 @@ int main() {
             fflush(stdout);
             sleep_ms(10);  
             
-            // sleep_run_from_xosc();
+            sleep_run_from_rosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
             
             sleep_power_up();
+
+            gpio_init(LED_PWR_PIN);
+            gpio_set_dir(LED_PWR_PIN, GPIO_IN);
             printf("wake from dormant, pin=%d\n", gpio_get(LED_PWR_PIN));
             fflush(stdout);
 
