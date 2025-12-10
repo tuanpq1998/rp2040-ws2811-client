@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <tusb.h>
 #include <cmath>
 
 #include "pico/stdlib.h"
 #include "pico/sleep.h"
+#include "pico/stdio_usb.h"
 
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
@@ -91,10 +93,17 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
     b2 = clamp8(bf);
 }
 
+void init_usb_cdc() {
+    tusb_init();
+    stdio_usb_init();
+    while (!tud_cdc_connected()) tud_task();
+}
+
 int main() {
 
     stdio_init_all();
-    sleep_ms(2000);  
+    init_usb_cdc();
+    sleep_ms(2000);
 
     printf("init main\n");
    
@@ -133,17 +142,7 @@ int main() {
             
             sleep_power_up();
 
-            // gpio_init(LED_PWR_PIN);
-            // gpio_set_dir(LED_PWR_PIN, GPIO_IN);
-            // printf("wake from dormant, pin=%d\n", gpio_get(LED_PWR_PIN));
-            // fflush(stdout);
-
-            // for (int i = 0; i < 50; i++) {
-            //     bool v = gpio_get(LED_PWR_PIN);
-            //     printf("after wake #%d, pin=%d\n", i, v);
-            //     fflush(stdout);
-            //     sleep_ms(100);
-            // }
+            init_usb_cdc();
             continue;
         }
         
