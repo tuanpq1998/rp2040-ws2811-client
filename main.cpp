@@ -128,8 +128,8 @@ int main() {
             fflush(stdout);
             sleep_ms(10);  
             
-            sleep_run_from_rosc();
-            sleep_goto_dormant_until_level_high(LED_PWR_PIN);
+            // sleep_run_from_rosc();
+            sleep_goto_dormant_until_edge_high(LED_PWR_PIN);
             
             sleep_power_up();
 
