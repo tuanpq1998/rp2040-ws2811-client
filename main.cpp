@@ -128,22 +128,23 @@ int main() {
             fflush(stdout);
             sleep_ms(10);  
             
-            // sleep_run_from_rosc();
+            sleep_run_from_rosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
             
             sleep_power_up();
 
-            gpio_init(LED_PWR_PIN);
-            gpio_set_dir(LED_PWR_PIN, GPIO_IN);
-            printf("wake from dormant, pin=%d\n", gpio_get(LED_PWR_PIN));
-            fflush(stdout);
+            // gpio_init(LED_PWR_PIN);
+            // gpio_set_dir(LED_PWR_PIN, GPIO_IN);
+            // printf("wake from dormant, pin=%d\n", gpio_get(LED_PWR_PIN));
+            // fflush(stdout);
 
-            for (int i = 0; i < 50; i++) {
-                bool v = gpio_get(LED_PWR_PIN);
-                printf("after wake #%d, pin=%d\n", i, v);
-                fflush(stdout);
-                sleep_ms(100);
-            }
+            // for (int i = 0; i < 50; i++) {
+            //     bool v = gpio_get(LED_PWR_PIN);
+            //     printf("after wake #%d, pin=%d\n", i, v);
+            //     fflush(stdout);
+            //     sleep_ms(100);
+            // }
+            continue;
         }
         
         for (auto it = leds.begin(); it != leds.end(); it++) {
