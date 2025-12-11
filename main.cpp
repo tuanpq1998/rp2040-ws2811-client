@@ -10,6 +10,7 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "hardware/rosc.h"
+#include "hardware/timer.h"
 
 #include "ws2812.pio.h"
 
@@ -95,7 +96,7 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
     b2 = clamp8(bf);
 }
 
-int64_t push_fan_switch() {
+int64_t push_fan_switch(alarm_id_t id, void *user_data) {
     gpio_put(FAN_SWITCH_PIN, 1);
     sleep_ms(200);
     gpio_put(FAN_SWITCH_PIN, 0);
@@ -139,7 +140,7 @@ int main() {
 
         if (!is_init) {
             printf("push_fan_switch\n");
-            push_fan_switch();
+            add_alarm_in_ms(10000, push_fan_switch, NULL, false);
             is_init = true;
         }
 
