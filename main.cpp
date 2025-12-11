@@ -20,6 +20,8 @@
 
 #define LED_PWR_PIN 13
 
+#define FAN_SWITCH_PIN 21
+
 #ifdef PICO_DEFAULT_WS2812_PIN
 #define WS2812_PIN PICO_DEFAULT_WS2812_PIN
 #else
@@ -93,10 +95,24 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
     b2 = clamp8(bf);
 }
 
+void push_fan_switch() {
+    gpio_put(FAN_SWITCH_PIN, 1);
+    sleep_ms(200);
+    gpio_put(FAN_SWITCH_PIN, 0);
+    sleep_ms(1000);
+}
+
 int main() {
 
     stdio_init_all();
+
+    gpio_init(FAN_SWITCH_PIN);
+    gpio_set_dir(FAN_SWITCH_PIN, GPIO_OUT);
+    gpio_put(FAN_SWITCH_PIN, 0);
+    
     sleep_ms(2000);
+
+    push_fan_switch();
 
     printf("init main\n");
    
@@ -135,6 +151,7 @@ int main() {
             
             sleep_power_up();
 
+            push_fan_switch();
             continue;
         }
         
