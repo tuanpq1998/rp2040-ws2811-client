@@ -97,8 +97,10 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
 }
 
 int64_t push_fan_switch(alarm_id_t id, void *user_data) {
+    gpio_put(FAN_SWITCH_PIN, 0);
+    sleep_ms(1000);
     gpio_put(FAN_SWITCH_PIN, 1);
-    sleep_ms(200);
+    sleep_ms(500);
     gpio_put(FAN_SWITCH_PIN, 0);
     sleep_ms(1000);
     return 0;
@@ -112,10 +114,10 @@ int main() {
     gpio_set_dir(FAN_SWITCH_PIN, GPIO_OUT);
     gpio_put(FAN_SWITCH_PIN, 0);
     
-    sleep_ms(2000);
-
     add_alarm_in_ms(10000, push_fan_switch, NULL, false);
-
+    
+    sleep_ms(2000);
+    
     printf("init main\n");
    
     gpio_init(LED_PWR_PIN);
@@ -152,8 +154,6 @@ int main() {
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
             
             sleep_power_up();
-
-            add_alarm_in_ms(10000, push_fan_switch, NULL, false);
 
             continue;
         }
