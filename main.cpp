@@ -151,7 +151,9 @@ int main() {
             
             sleep_power_up();
 
+            sleep_ms(2000);
             push_fan_switch();
+            
             continue;
         }
         
