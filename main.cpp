@@ -10,7 +10,6 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "hardware/rosc.h"
-#include "hardware/timer.h"
 
 #include "ws2812.pio.h"
 
@@ -96,7 +95,7 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
     b2 = clamp8(bf);
 }
 
-int64_t push_fan_switch(alarm_id_t id, void *user_data) {
+int64_t push_fan_switch( ) {
     gpio_put(FAN_SWITCH_PIN, 1);
     sleep_ms(200);
     gpio_put(FAN_SWITCH_PIN, 0);
@@ -137,13 +136,6 @@ int main() {
     auto ws2811 = WS2811Client<NUM_LEDS_TO_EMULATE, GRB>();
 
     while (1) {
-
-        if (!is_init) {
-            printf("push_fan_switch\n");
-            add_alarm_in_ms(10000, push_fan_switch, NULL, false);
-            is_init = true;
-        }
-
         bool is_led_pwr_on = gpio_get(LED_PWR_PIN);
         printf("LED_PWR_PIN=%d\n", is_led_pwr_on);
         const auto leds = ws2811.getLEDsAtomic();
@@ -155,11 +147,12 @@ int main() {
             fflush(stdout);
             sleep_ms(10);  
             
+            is_init = false;
+            
             sleep_run_from_xosc();
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
             
             sleep_power_up();
-            is_init = false;
 
             continue;
         }
@@ -183,6 +176,12 @@ int main() {
         }
  
         sleep_ms(30);
+        if (!is_init) {
+            sleep_ms(5000);
+            printf("push_fan_switch\n");
+            push_fan_switch();
+            is_init = true;
+        }
 
     }
 }

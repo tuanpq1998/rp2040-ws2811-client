@@ -30,7 +30,6 @@ target_link_libraries(${PROJECT_NAME}
     hardware_pio
     hardware_dma
     hardware_sleep
-    hardware_timer
 )
 
 pico_add_extra_outputs(${PROJECT_NAME})
