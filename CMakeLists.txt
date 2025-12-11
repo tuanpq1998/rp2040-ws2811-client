@@ -29,7 +29,6 @@ target_link_libraries(${PROJECT_NAME}
     pico_mem_ops
     hardware_pio
     hardware_dma
-    hardware_sleep
 )
 
 pico_add_extra_outputs(${PROJECT_NAME})
