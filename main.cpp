@@ -152,10 +152,10 @@ int main() {
             sleep_goto_dormant_until_level_high(LED_PWR_PIN);
             
             sleep_power_up();
-            gpio_init(FAN_SWITCH_PIN);
-                gpio_set_dir(FAN_SWITCH_PIN, GPIO_OUT);
-                gpio_put(FAN_SWITCH_PIN, 0);
-            add_alarm_in_ms(10000, push_fan_switch, NULL, false);
+            // gpio_init(FAN_SWITCH_PIN);
+            //     gpio_set_dir(FAN_SWITCH_PIN, GPIO_OUT);
+            //     gpio_put(FAN_SWITCH_PIN, 0);
+            // add_alarm_in_ms(10000, push_fan_switch, NULL, false);
 
             continue;
         }
