@@ -96,25 +96,25 @@ inline void correct_color_fast(uint8_t r, uint8_t g, uint8_t b,
     b2 = clamp8(bf);
 }
 
-int64_t push_fan_switch(alarm_id_t id, void *user_data) {
-    gpio_put(FAN_SWITCH_PIN, 1);
-    sleep_ms(200);
-    gpio_put(FAN_SWITCH_PIN, 0);
-    sleep_ms(1000);
-    return 0;
-}
+// int64_t push_fan_switch(alarm_id_t id, void *user_data) {
+//     gpio_put(FAN_SWITCH_PIN, 1);
+//     sleep_ms(200);
+//     gpio_put(FAN_SWITCH_PIN, 0);
+//     sleep_ms(1000);
+//     return 0;
+// }
 
 int main() {
 
     stdio_init_all();
 
-    gpio_init(FAN_SWITCH_PIN);
-    gpio_set_dir(FAN_SWITCH_PIN, GPIO_OUT);
-    gpio_put(FAN_SWITCH_PIN, 0);
+    // gpio_init(FAN_SWITCH_PIN);
+    // gpio_set_dir(FAN_SWITCH_PIN, GPIO_OUT);
+    // gpio_put(FAN_SWITCH_PIN, 0);
     
     sleep_ms(2000);
 
-    add_alarm_in_ms(10000, push_fan_switch, NULL, false);
+    // add_alarm_in_ms(10000, push_fan_switch, NULL, false);
 
     printf("init main\n");
    
